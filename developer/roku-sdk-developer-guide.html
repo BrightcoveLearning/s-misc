@@ -3421,6 +3421,7 @@ m.bcPlayer = createObject("roSGNode", "bcLib:bcPlayer")
                               </tbody>
                           </table>
                         </div>
+                        <p>Code snippet</p>
                         <pre class="line-numbers">
                             <code class="language-basic" translate="No">m.bcPlayer = createObject("roSGNode", "bcLib:bcPlayer")
                             m.bcPlayer.ssai.enabled = true ' enable SSAI
@@ -3617,7 +3618,7 @@ end sub
                                 <li><p>Supported properties in the AssociativeArray object:</p>
                                 <ul>
                                     <li><p><code translate="no">childDirected</code> <code translate="no" class="text-secondary">STRING</code> <code translate="no" class="text-success">OPTIONAL</code></p>
-                                    <p>Specifies if the video contains child directed content. This value is used to set RAF’s <a target="_blank" href="https://developer.roku.com/en-gb/docs/developer-program/advertising/raf-api.md#setcontentgenregenres-as-string-kidscontent-as-boolean" target="_blank" rel="noopener noreferrer">setContentGenre()</a> function parameter. It’s also used to set the ROKU_ADS_KIDS_CONTENT Roku macro value.</p>
+                                    <p>Specifies if the video contains child directed content. This value is used to set RAF’s <a target="_blank" href="https://developer.roku.com/en-gb/docs/developer-program/advertising/raf-api.md#setcontentgenregenres-as-string-kidscontent-as-boolean" target="_blank" rel="noopener noreferrer">setContentGenre()</a> function parameter. It’s also used to set the <code translate="no">ROKU_ADS_KIDS_CONTENT</code> Roku macro value.</p>
                                     <p><code translate="no" class="text-warning">DEFAULT</code> <code translate="no">false</code></p>
                                     </li>
                                     <li><p><code translate="no">contentid</code> <code translate="no" class="text-secondary">STRING</code> <code translate="no" class="text-success">OPTIONAL</code></p>
@@ -3741,7 +3742,7 @@ end sub
                     </code></pre>
         </section>
 
-        
+        <hr>
 
         <section>
             <h3 id="bcPlayer-functions">Functions</h3>
@@ -3839,7 +3840,7 @@ end sub
                     <ul>
                         <li><p>
                             <code translate="no">autoplay</code> <code class="text-secondary" translate="no">INTEGER</code> <code class="text-success" translate="No">OPTIONAL
-                </code> [To be implemented] Specifies the index of the video that should start playing when the load process ends (in case of a playlist). A value of <code translate="no">-1</code> will prevent the video from auto playing when the load process ends. By default autoplay is set to <code translate="no">0</code>.</p></li>
+                </code> Specifies the index of the video that should start playing when the load process ends (in case of a playlist). A value of <code translate="no">-1</code> will prevent the video from auto playing when the load process ends. By default autoplay is set to <code translate="no">0</code>.</p></li>
                 <li>
                     <p><code translate="no">prebuffer</code> <code class="text-secondary" translate="no">BOOLEAN</code> <code class="text-success" translate="no">OPTIONAL</code></p>
                     <p>Specifies if it should start prebuffering the video stream indicated in the <code translate="no">autoplay</code> option.</p>
@@ -3856,7 +3857,7 @@ end sub
                 </li>                
                         <li><p>
                             <code translate="no">position</code> <code class="text-secondary" translate="no">STRING</code> <code class="text-success" translate="No">OPTIONAL
-                </code> [To be implemented] Specifies where the new data should be loaded if bcPlayer already has content. Ie, should the data replace the old content, should it be added to the end or start of the current content. Possible values:</p>
+                </code> Specifies where the new data should be loaded if bcPlayer already has content. Ie, should the data replace the old content, should it be added to the end or start of the current content. Possible values:</p>
                             <ul>
                                 <li><p><code translate="no">replace</code> <code translate="no" class="text-warning">DEFAULT</code></p>
                                 <p>Replace previous contents with the new content. If <code translate="no">position</code> isn't specified, <code translate="no">replace</code> is used by default. If the current content is a single video, the new content will always replace it.</p></li>
@@ -3905,7 +3906,7 @@ end sub
                         ' make sure the response Node is available so it can be used to retrieve the response metadata
                         if rNode &#60;&#62; invalid then
                 
-                          ' set up a listener function for the "response" field
+                          ' set up an observer function for the "response" field
                           rNode.observeField("response", "onVideoResponse")
                 
                         end if
@@ -3949,7 +3950,7 @@ end sub
                                 <li><p>A single video <code translate="no" class="text-secondary">ASSOCIATIVE ARRAY</code></p>
                                 <p>If an Associative Array object is provided, a single ContentNode is created and all key-value pairs are set as its fields.</p>
                                 </li>
-                                <li><p>A single video <code translate="no" class="text-secondary">ARRAY</code></p>
+                                <li><p>A set of videos <code translate="no" class="text-secondary">ARRAY</code></p>
                                 <p>If an Array of Associative Arrays is provided, the ContentNode is structured as a playlist where the videos ContentNodes are added into the parent playlist ContentNode.</p>
                                 </li>
                             </ul>
@@ -3989,10 +3990,10 @@ end sub
                                     <p>Replace previous contents with the new content. If <code translate="no">position</code> isn't specified, <code translate="no">replace</code> is used by default. If the current content is a single video, the new content will always replace it.</p>
                                     </li>
                                     <li><code translate="no">append</code>
-                                    <p>Add the new content at the end of the current content. Only applicable if the current content is a playlist.</p>
+                                    <p>Add the new content at the end of the current content. If the current content is not a playlist, a new playlist is created and both the current and new content are added to the playlist.</p>
                                     </li>
                                     <li><code translate="no">prepend</code>
-                                    <p>Add the new content at the start of the current content. Only applicable if the current content is a playlist.</p>
+                                    <p>Add the new content at the start of the current content. If the current content is not a playlist, a new playlist is created and both the current and new content are added to the playlist.</p>
                                     </li>
                     
                                 </ul>
@@ -4022,7 +4023,7 @@ end sub
 <hr>
                 <section>
                     <h3 id="getVideo">getVideo</h3>
-                    <p>Retrieves a specific Brightcove video through Playback API, loads its metadata into bcPlayer, and starts playback.</p>
+                    <p>Retrieves a specific Brightcove video through Playback API, if configured to do so, loads its metadata into bcPlayer, and starts playback.</p>
                     <p><a target="_blank" href="https://apis.support.brightcove.com/playback/references/reference_v2.html#tag/Videos/operation/Get_Video_by_ID_or_Reference_ID">Playback API reference</a>.</p>
                     <p>Parameters:</p>
                     <ul>
@@ -4418,8 +4419,9 @@ end sub
                 <hr>
                 <section>
                     <h3 id="getRelated">getRelated</h3>
-                    <p>Retrieves a set of Brightcove videos that are related to the specified video through Playback API and, if configured to do so, loads its metadata into bcPlayer and starts playback. </p>
-                    <p>Using the name and short description of the specified video, the Playback API searches for videos with any partial matches in the following fields: <code translate="no">name</code>, <code translate="no">short description</code>, <code translate="no">long_description</code>, <code translate="no">tags</code>.</p>
+                    <p><code class="text-secondary" translate="no">ASSOCIATIVE ARRAY</code></p>
+                    <p>Retrieves a set of Brightcove videos that are related to the specified video <code translate="no">id</code> through Playback API. </p>
+                    <p>Using the name and short description of the specified video <code translate="no">id</code>, the Playback API searches for videos with any partial matches in the following fields: <code translate="no">name</code>, <code translate="no">short_description</code>, <code translate="no">long_description</code>, <code translate="no">tags</code>.</p>
                     <p><a target="_blank" href="https://apis.support.brightcove.com/playback/references/reference_v2.html#tag/Videos/operation/Get_Related_Videos_by_ID_or_Reference_ID">Playback API reference</a>.</p>
                     <p>Parameters:</p>
                     <ul>
@@ -5553,7 +5555,7 @@ end sub
    ' setup the getVideo configuration, provide the response Node and initiate the API request
    m.bcAPI.getVideo = {
      node: responseNode,
-     id: "<brightcove-video-id>",
+     id: "&#60;brightcove-video-id&#62;",
      params: {
        ad_config_id: "my-ad-config-id"
      }
@@ -5744,7 +5746,7 @@ end sub
 
  ' setup the getVideos configuration and initiate it
  m.bcAPI.getRelated = {
-   id: "&#60;video-i&#62;",
+   id: "&#60;video-id&#62;",
    params: {
      limit: 10,
      offset: 20,
@@ -5789,6 +5791,7 @@ end sub
         <hr>
         <section>
             <h3 id="bcAPI-getPlaylist">getPlaylist</h3>
+            <p><code class="text-secondary" translate="no">ASSOCIATIVE ARRAY</code></p>
             <p>Retrieves a Brightcove playlist metadata through Playback API.</p>
 
             <p>The response object is handled as described in the request field. In this case, the response id property is always “getPlaylist“.</p>
@@ -6350,11 +6353,11 @@ end sub
                 <p>Code Snippet</p>
                 <pre class="line-numbers">
                     <code class="language-basic" translate="No">m.bcUtils = createObject("roSGNode", "bcLib:Utils")
-                        test = m.bcUtils.callFunc("indexOf", "This is A tEst string", "a test")
-                        ' test = 8
-                
-                        test = m.bcUtils.callFunc("indexOf", [2, "a", 5], "5")
-                        ' test = -1
+ test = m.bcUtils.callFunc("indexOf", "This is A tEst string", "a test")
+ ' test = 8
+ 
+ test = m.bcUtils.callFunc("indexOf", [2, "a", 5], "5")
+ ' test = -1
                     </code></pre>
                 </section>
                 <hr>
@@ -6373,8 +6376,8 @@ end sub
                 <p>Code Snippet</p>
                 <pre class="line-numbers">
                     <code class="language-basic" translate="No">m.bcUtils = createObject("roSGNode", "bcLib:Utils")
-                        test = m.bcUtils.callFunc("isBool", "Def not a boolean")
-                        ' test = false
+ test = m.bcUtils.callFunc("isBool", "Def not a boolean")
+ ' test = false
                     </code></pre>
                 </section>
                 <hr>
@@ -6419,8 +6422,8 @@ end sub
                 <p>Code Snippet</p>
                 <pre class="line-numbers">
                     <code class="language-basic" translate="No">m.bcUtils = createObject("roSGNode", "bcLib:Utils")
-                        test = m.bcUtils.callFunc("isAA", {})
-                        ' test = true
+ test = m.bcUtils.callFunc("isAA", {})
+ ' test = true
                     </code></pre>
                 </section>
                 <hr>
@@ -6440,8 +6443,8 @@ end sub
                 <p>Code Snippet</p>
                 <pre class="line-numbers">
                     <code class="language-basic" translate="No">m.bcUtils = createObject("roSGNode", "bcLib:Utils")
-                        test = m.bcUtils.callFunc("isArray", ["this", "is", "an", "array"])
-                        ' test = true
+ test = m.bcUtils.callFunc("isArray", ["this", "is", "an", "array"])
+ ' test = true
                     </code></pre>
                 </section>
                 <hr>
@@ -6461,8 +6464,8 @@ end sub
                 <p>Code Snippet</p>
                 <pre class="line-numbers">
                     <code class="language-basic" translate="No">m.bcUtils = createObject("roSGNode", "bcLib:Utils")
-                        test = m.bcUtils.callFunc("isInt", "123")
-                        ' test = false
+ test = m.bcUtils.callFunc("isInt", "123")
+ ' test = false
                     </code></pre>
                 </section>
                 <hr>
@@ -6482,8 +6485,8 @@ end sub
                 <p>Code Snippet</p>
                 <pre class="line-numbers">
                     <code class="language-basic" translate="No">m.bcUtils = createObject("roSGNode", "bcLib:Utils")
-                        test = m.bcUtils.callFunc("isFloat", 1.23)
-                        ' test = true
+ test = m.bcUtils.callFunc("isFloat", 1.23)
+ ' test = true
                     </code></pre>
                 </section>
                 <hr>
@@ -6503,8 +6506,8 @@ end sub
                 <p>Code Snippet</p>
                 <pre class="line-numbers">
                     <code class="language-basic" translate="No">m.bcUtils = createObject("roSGNode", "bcLib:Utils")
-                        test = m.bcUtils.callFunc("isNumber", 323)
-                        ' test = true
+ test = m.bcUtils.callFunc("isNumber", 323)
+ ' test = true
                     </code></pre>
                 </section>
                 <hr>
@@ -6524,8 +6527,8 @@ end sub
                 <p>Code Snippet</p>
                 <pre class="line-numbers">
                     <code class="language-basic" translate="No">m.bcUtils = createObject("roSGNode", "bcLib:Utils")
-                        test = m.bcUtils.callFunc("isString", "323")
-                        ' test = true
+ test = m.bcUtils.callFunc("isString", "323")
+ ' test = true
                     </code></pre>
                 </section>
                 <hr>
@@ -6549,8 +6552,8 @@ end sub
                 <p>Code Snippet</p>
                 <pre class="line-numbers">
                     <code class="language-basic" translate="No">m.bcUtils = createObject("roSGNode", "bcLib:Utils")
-                test = m.bcUtils.callFunc("charAt", "My String", 3)
-                ' test = "S"
+ test = m.bcUtils.callFunc("charAt", "My String", 3)
+ ' test = "S"
                     </code></pre>
                 </section>
                 <hr>
@@ -6626,12 +6629,12 @@ end sub
                 <p>Code Snippet</p>
                 <pre class="line-numbers">
                     <code class="language-basic" translate="No">m.bcUtils = createObject("roSGNode", "bcLib:Utils")
-                        test = m.bcUtils.callFunc("toString", 567)
-                        ' test = "567"
-                
-                        test2 = { one: { two: { three: { four: { five: "Hello World" } } } } }
-                        test2 = m.bcUtils.callFunc("toString", test2, 2)
-                        ' test2 = "{\"one\":{\"two\":{[\"three\"]}}}"
+ test = m.bcUtils.callFunc("toString", 567)
+ ' test = "567"
+ 
+ test2 = { one: { two: { three: { four: { five: "Hello World" } } } } }
+ test2 = m.bcUtils.callFunc("toString", test2, 2)
+ ' test2 = "{\"one\":{\"two\":{[\"three\"]}}}"
                     </code></pre>
                 </section>
                 <hr>
@@ -6687,16 +6690,16 @@ end sub
                     <p>Code Snippet</p>
                     <pre class="line-numbers">
                         <code class="language-basic" translate="No">m.bcUtils = createObject("roSGNode", "bcLib:Utils")
-                    testNode = createObject("roSGNode", "ContentNode")
-                    testNode.id = "hello world"
-                    
-                    m.bcUtils.callFunc("setAddFields", {
-                      id: "hello planet",
-                      customField: "my custom field"
-                    })
-                    
-                    ? "testNode id: " testNode.id ' => "hello planet"
-                    ? "testNode customField: " testNode.customField ' => "my custom field"
+ testNode = createObject("roSGNode", "ContentNode")
+ testNode.id = "hello world"
+ 
+ m.bcUtils.callFunc("setAddFields", {
+   id: "hello planet",
+   customField: "my custom field"
+ })
+ 
+ ? "testNode id: " testNode.id ' => "hello planet"
+ ? "testNode customField: " testNode.customField ' => "my custom field"
                         </code></pre>
                         </section>
                         <hr>
@@ -6721,13 +6724,13 @@ end sub
                 <p>Code Snippet</p>
                 <pre class="line-numbers">
                     <code class="language-basic" translate="No">m.bcUtils = createObject("roSGNode", "bcLib:Utils")
-                url = "http://my.fancy.url"
-                url = m.bcUtils.callFunc("addURLParams", url, {hello: "world"})
-                ? url ' => "http://my.fancy.url?hello=world"
-                
-                ' running the function again with the same parameters will result in duplicated query parameters
-                url = m.bcUtils.callFunc("addURLParams", url, {hello: "world"})
-                ? url ' => "http://my.fancy.url?hello=world&hello=world"
+ url = "http://my.fancy.url"
+ url = m.bcUtils.callFunc("addURLParams", url, {hello: "world"})
+ ? url ' => "http://my.fancy.url?hello=world"
+ 
+ ' running the function again with the same parameters will result in duplicated query parameters
+ url = m.bcUtils.callFunc("addURLParams", url, {hello: "world"})
+ ? url ' => "http://my.fancy.url?hello=world&hello=world"
                     </code></pre>
                         </section>
                         <hr>
@@ -6759,8 +6762,8 @@ end sub
                 <p>Code Snippet</p>
                 <pre class="line-numbers">
                     <code class="language-basic" translate="No">m.bcUtils = createObject("roSGNode", "bcLib:Utils")
-                        test = m.bcUtils.callFunc("match", "abcd", "(a|(z))(bc)", "i")
-                        ' test = ["abc", "a", "", "bc"]
+ test = m.bcUtils.callFunc("match", "abcd", "(a|(z))(bc)", "i")
+ ' test = ["abc", "a", "", "bc"]
                     </code></pre>
                         </section>
                         <hr>
@@ -6787,8 +6790,8 @@ end sub
                 <p>Code Snippet</p>
                 <pre class="line-numbers">
                     <code class="language-basic" translate="No">m.bcUtils = createObject("roSGNode", "bcLib:Utils")
-                        test = m.bcUtils.callFunc("replace", "Abracadabra", "a", "x")
-                        ' test = "Abrxcxdxbrx"
+ test = m.bcUtils.callFunc("replace", "Abracadabra", "a", "x")
+ ' test = "Abrxcxdxbrx"
                     </code></pre>
                         </section>
                         <hr>
@@ -6814,14 +6817,14 @@ end sub
                 <p>Code Snippet</p>
                 <pre class="line-numbers">
                     <code class="language-basic" translate="No">m.bcUtils = createObject("roSGNode", "bcLib:Utils")
-                        test = m.bcUtils.callFunc("truncate", "My String", 3)
-                        ' test = "My ..."
-                
-                        test2 = m.bcUtils.callFunc("truncate", "My String", 2, "-")
-                        ' test2 = "My-"
-                
-                        test3 = m.bcUtils.callFunc("truncate", "My String", 2, "")
-                        ' test3 = "My"
+ test = m.bcUtils.callFunc("truncate", "My String", 3)
+ ' test = "My ..."
+ 
+ test2 = m.bcUtils.callFunc("truncate", "My String", 2, "-")
+ ' test2 = "My-"
+ 
+ test3 = m.bcUtils.callFunc("truncate", "My String", 2, "")
+ ' test3 = "My"
                     </code></pre>
                         </section>
                         <hr>
@@ -7149,7 +7152,7 @@ end sub
                         <p>Code Snippet</p>
                         <pre class="line-numbers">
                             <code class="language-basic" translate="No">m.bcLogger = createObject("roSGNode", "bcLib:Logger")
-                                m.bcLogger.callFunc("error", "my error message", &#60;optional-data&#62;)
+ m.bcLogger.callFunc("error", "my error message", &#60;optional-data&#62;)
                             </code></pre>
                     </section>
                     <hr>
@@ -7169,7 +7172,7 @@ end sub
                         <p>Code Snippet</p>
                         <pre class="line-numbers">
                             <code class="language-basic" translate="No">m.bcLogger = createObject("roSGNode", "bcLib:Logger")
-                                m.bcLogger.callFunc("warn", "my warning message", &#60;optional-data&#62;)
+ m.bcLogger.callFunc("warn", "my warning message", &#60;optional-data&#62;)
                                 
                             </code></pre>
                     </section>
@@ -7190,7 +7193,7 @@ end sub
                         <p>Code Snippet</p>
                         <pre class="line-numbers">
                             <code class="language-basic" translate="No">m.bcLogger = createObject("roSGNode", "bcLib:Logger")
-                                m.bcLogger.callFunc("info", "my informational message", &#60;optional-data&#62;)
+ m.bcLogger.callFunc("info", "my informational message", &#60;optional-data&#62;)
                             </code></pre>
                     </section>
                     <hr>
@@ -7210,7 +7213,7 @@ end sub
                         <p>Code Snippet</p>
                         <pre class="line-numbers">
                             <code class="language-basic" translate="No">m.bcLogger = createObject("roSGNode", "bcLib:Logger")
-                                m.bcLogger.callFunc("debug", "my debug message", &#60;optional-data&#62;)
+ m.bcLogger.callFunc("debug", "my debug message", &#60;optional-data&#62;)
                             </code></pre>
                     </section>
                     <hr>
@@ -7230,7 +7233,7 @@ end sub
                         <p>Code Snippet</p>
                         <pre class="line-numbers">
                             <code class="language-basic" translate="No">m.bcLogger = createObject("roSGNode", "bcLib:Logger")
-                                m.bcLogger.callFunc("verbose", "my verbose message", &#60;optional-data&#62;)
+ m.bcLogger.callFunc("verbose", "my verbose message", &#60;optional-data&#62;)
                             </code></pre>
                     </section>
                     
@@ -7244,16 +7247,16 @@ end sub
             <pre class="line-numbers">
                 <code class="language-basic" translate="No">sub init()
 
-                    ' create a Dialog node instance
-                    m.dialog = createObject("roSGNode", "bcLib:Dialog")
-                
-                    ' set up its fields
-                    m.dialog.setFields({ ... })
-                
-                    ' assign it to the app Scene "dialog" field to show it
-                    m.top.getScene().dialog = m.dialog
-                
-                end sub
+     ' create a Dialog node instance
+     m.dialog = createObject("roSGNode", "bcLib:Dialog")
+ 
+     ' set up its fields
+     m.dialog.setFields({ ... })
+ 
+     ' assign it to the app Scene "dialog" field to show it
+     m.top.getScene().dialog = m.dialog
+ 
+ end sub
                 </code></pre>
                 <hr>
                 <section>
